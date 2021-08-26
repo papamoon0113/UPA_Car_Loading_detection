@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block contents %}
+<div class="w3-main" style="margin-left:200px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <h3><b><i class="fa fa-table" style="font-size:24px; margin-top:5px; margin-bottom:5px;"></i> 차량 현황표</b></h3>
+  </header>
+  <div class="w3-container w3-half w3-center">
+    <h5><b>야적지</b></h5>
+      <div>
+        <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white w3-half">
+          {% for i in range(data[0][0]) %}
+            <tr>
+              <td>{{ data[0][i+2][0] }}</td>
+              <td>{{ data[0][i+2][1] }}</td>
+            </tr>
+          {% endfor %}
+        </table><br>
+        <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white w3-half">
+          {% for i in range(data[0][0]+1, data[0][0]+data[0][1]) %}
+            <tr>
+              <td>{{ data[0][i+2][0] }}</td>
+              <td>{{ data[0][i+2][1] }}</td>
+            </tr>
+          {% endfor %}
+        </table><br>
+      </div>
+    
+  </div>
+  <div class="w3-container w3-half w3-center">
+    <h5><b>6 부두</b></h5>
+      <div>
+        <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white w3-half">
+          {% for i in range(data[1][0]) %}
+            <tr>
+              <td>{{ data[1][i+2][0] }}</td>
+              <td>{{ data[1][i+2][1] }}</td>
+            </tr>
+          {% endfor %}
+        </table><br>
+        <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white w3-half">
+          {% for i in range(data[1][0]+1, data[1][0]+data[1][1]) %}
+            <tr>
+              <td>{{ data[1][i+2][0] }}</td>
+              <td>{{ data[1][i+2][1] }}</td>
+            </tr>
+          {% endfor %}
+        </table><br>
+      </div>
+    
+  </div>
+  <hr>
+  <div class="w3-container"></div>
+  <br>
+  <div class="w3-container w3-gray w3-padding-16">
+    <div class="w3-row">
+      <div class="w3-container w3-quarter w3-margin-top w3-margin-bottom">
+        <img src="{{ url_for('static', filename='img/logo_bigleader.png') }}" alt="big_leader" style="height: 48px; display: block; margin-left: auto; margin-right: auto;">
+      </div>
+      <div class="w3-container w3-quarter w3-margin-top w3-margin-bottom">
+        <img src="{{ url_for('static', filename='img/logo_nextlevel.png') }}" alt="자랑스러운 우리팀" style="height: 48px; display: block; margin-left: auto; margin-right: auto;">
+      </div>
+      <div class="w3-container w3-quarter w3-margin-top w3-margin-bottom">
+        <img src="{{ url_for('static', filename='img/logo_upa.png') }}" alt="upa" style="height: 48px; display: block; margin-left: auto; margin-right: auto;">
+      </div>
+      <div class="w3-container w3-quarter w3-margin-top w3-margin-bottom">
+        <img src="{{ url_for('static', filename='img/logo_ulc.png') }}" alt="ulc" style="height: 48px; display: block; margin-left: auto; margin-right: auto;">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock contents %}
