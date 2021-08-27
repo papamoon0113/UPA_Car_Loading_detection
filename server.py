@@ -15,8 +15,8 @@ CORS(app)
 def home():
     df = pd.read_excel('table_example.xlsx')
      # 이 윗 부분이 나중에 대체됨
-    df_yard = df[df.LOCATION == 'yard']
-    df_6wharf = df[df.LOCATION == '6wharf']
+    df_yard = df[df['LOCATION'] == 'yard']
+    df_6wharf = df[df['LOCATION'] == '6wharf']
 
     data = []
     list_ = []
@@ -25,30 +25,29 @@ def home():
     if len(df_)%2 == 0:
         list_.append(int(len(df_)/2))
         list_.append(int(len(df_)/2))
-        for i in range(len(df_)):
-            list_.append([df_.iloc[i]['MODEL'], df_.iloc[i]['COUNT']])
+
     else:
         list_.append(int(len(df_)//2 + 1))
-        list_.append(int(len(df_)//2 + 1))
-        for i in range(len(df_)):
-            list_.append([df_.iloc[i]['MODEL'], df_.iloc[i]['COUNT']])
-        list_.append([' ',' '])
+        list_.append(int(len(df_)//2))
+
+    for i in range(len(df_)):
+        list_.append([df_.iloc[i]['MODEL'], df_.iloc[i]['COUNT']])
     data.append(list_)
 
+    list_ = []
     df_ = df_6wharf
     if len(df_)%2 == 0:
         list_.append(int(len(df_)/2))
         list_.append(int(len(df_)/2))
-        for i in range(len(df_)):
-            list_.append([df_.iloc[i]['MODEL'], df_.iloc[i]['COUNT']])
+
     else:
         list_.append(int(len(df_)//2 + 1))
-        list_.append(int(len(df_)//2 + 1))
-        for i in range(len(df_)):
-            list_.append([df_.iloc[i]['MODEL'], df_.iloc[i]['COUNT']])
-        list_.append([' ',' '])
-    data.append(list_)
+        list_.append(int(len(df_)//2))
 
+    for i in range(len(df_)):
+        list_.append([df_.iloc[i]['MODEL'], df_.iloc[i]['COUNT']])
+    data.append(list_)
+    data.append(df.MODEL.unique().tolist())
     return render_template('home.html', data=data)
 
 if __name__ == '__main__':
