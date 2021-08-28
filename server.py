@@ -156,7 +156,41 @@ def internal_error(error):
 
 @app.route('/chart')
 def chart():
-    return render_template('chart.html')
+    # 일단 현재 야적지에 있는 차량들을 전부 불러와야 한다.
+    _count = count_mgmt.Count()
+    df = _count.get_all()
+    # print(df)
+    # 그 다음에 차량에 info에 맞게 면적을 곱해준다
+    yard_df = df[df.LOCATION == 'YARD']
+    wharf_df = df[df.LOCATION == '6wharf']
+    yard_df.reset_index(inplace=True)
+    wharf_df.reset_index(inplace=True)
+    del yard_df['index']
+    del wharf_df['index']
+
+    yard_area = 0.0
+    wharf_area = 0.0
+    _info = info_mgmt.Info()
+    info_df = _info.get_all()
+    sonata = info_df[info_df.MODEL == 'YFSonata']['AREA'].iat[0]
+    for i in range(len(yard_df)):
+        model = yard_df.loc[i]['MODEL']
+        yard_area += info_df[info_df.MODEL == model]['AREA'].iat[0] * yard_df.loc[i]['COUNT']
+    
+    for i in range(len(wharf_df)):
+        model = wharf_df.loc[i]['MODEL']
+        wharf_area += info_df[info_df.MODEL == model]['AREA'].iat[0] * wharf_df.loc[i]['COUNT']
+    
+    yard_area_rest = info_df[info_df.MODEL == 'YARD']['AREA'].iat[0] - yard_area
+    wharf_area_rest = info_df[info_df.MODEL == '6wharf']['AREA'].iat[0] - wharf_area
+
+    yard_data = [['잔여 면적', yard_area_rest], ['야적 면적', yard_area]]
+    wharf_data = [['잔여 면적', wharf_area_rest], ['야적 면적', wharf_area]]
+    data = [yard_data, wharf_data, int(yard_area_rest//sonata), int(wharf_area_rest//sonata)]
+    print(data)
+    # 그걸 다 더해서 YARD와 6wharf 면적 값에서 뺀 값을 구하고, 그걸 배열로 넘긴다.
+    return render_template('chart.html', data=data)
+
 
 @app.route('/history')
 def history():

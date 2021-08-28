@@ -2,16 +2,8 @@ from inventory_db import conn_mysqldb
 import pandas as pd
 
 class Info():
-
-    def __init__(self, model, unique_num):
-        self.unique_num = unique_num
-        self.model = model
-
-    def get_id(self):
-        return str(self.unique_num)
-
     @staticmethod
-    def get_area(model): # 특정 장소의 특정 차 수량 정수형 반환
+    def get_area(model): 
         mysql_db = conn_mysqldb()
         db_cursor = mysql_db.cursor()
         sql = "SELECT * FROM model_info WHERE MODEL = '" + str(model) + "'"
@@ -28,6 +20,13 @@ class Info():
         count = pd.DataFrame(db_cursor.fetchall(), columns=['MODEL', 'AREA'])
         return count
 
+    def create(self, model, area):
+        mysql_db = conn_mysqldb()
+        db_cursor = mysql_db.cursor()
+        sql = "INSERT INTO model_info (MODEL, AREA) VALUES ('%s', '%s')" % (
+        str(model), str(area))
+        db_cursor.execute(sql)
+        mysql_db.commit()
 #     @staticmethod
 #     def create_table():
 #         models = [['VSR', 7.632], ['AVT', 8.48625], ['AVTH', 8.48625], ['i30', 7.7903], ['IOH', 8.1354], ['IOE', 8.1354], ['IOE5', 8.76015], ['G70', 8.66725],
