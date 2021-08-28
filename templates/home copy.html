@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block contents %}
-<script src="{{url_for('static', filename='js/jquery.js')}}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <div class="w3-main" style="margin-left:200px;margin-top:43px;">
   <!-- Header -->
   <header class="w3-container" style="padding-top:22px">
@@ -20,7 +20,7 @@
             <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white w3-half" id="myTable1">
               {% for i in range(data[0][0]) %}
                 <tr onclick="document.getElementById('id01').style.display='block'">
-                  <td class="model_yard">{{ data[0][i+2][0] }}</td>
+                  <td class="model">{{ data[0][i+2][0] }}</td>
                   <td>{{ data[0][i+2][1] }}</td>
                 </tr>
               {% endfor %}
@@ -30,7 +30,7 @@
             <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white w3-half" id="myTable2">
               {% for i in range(data[0][0], data[0][0]+data[0][1]) %}
                 <tr onclick="document.getElementById('id01').style.display='block'">
-                  <td class="model_yard">{{ data[0][i+2][0] }}</td>
+                  <td class="model">{{ data[0][i+2][0] }}</td>
                   <td>{{ data[0][i+2][1] }}</td>
                 </tr>
               {% endfor %}
@@ -43,7 +43,7 @@
             <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white w3-half" id="myTable3">
               {% for i in range(data[1][0]) %}
                 <tr onclick="document.getElementById('id01').style.display='block'">
-                  <td class="model_wharf">{{ data[1][i+2][0] }}</td>
+                  <td class="model">{{ data[1][i+2][0] }}</td>
                   <td>{{ data[1][i+2][1] }}</td>
                 </tr>
               {% endfor %}
@@ -51,7 +51,7 @@
             <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white w3-half" id="myTable4">
               {% for i in range(data[1][0], data[1][0]+data[1][1]) %}
                 <tr onclick="document.getElementById('id01').style.display='block'">
-                  <td class="model_wharf">{{ data[1][i+2][0] }}</td>
+                  <td class="model">{{ data[1][i+2][0] }}</td>
                   <td>{{ data[1][i+2][1] }}</td>
                 </tr>
               {% endfor %}
@@ -64,22 +64,12 @@
 
     <!-- The Modal -->
     <div id="id01" class="w3-modal">
-      <div class="w3-modal-content w3-animate-opacity w3-striped">
-        <div class="w3-container"  style="margin-top: 10vh;">
+      <div class="w3-modal-content w3-animate-opacity">
+        <div class="w3-container">
           <span onclick="document.getElementById('id01').style.display='none'"
           class="w3-button w3-display-topright">&times;</span>
-          <div id="modal_content" style="max-height: 70vh; overflow-y:scroll;">
-            <br>
-            <h5><b><span id = "modal_name">???</span></b></h5>
-            <table class="w3-table w3-hoverable w3-border" id="modal_table" style="margin-bottom: 20px;">
-              <tr id="header">
-                <td>날짜</td>
-                <td>FROM_TO</td>
-                <td>+/-</td>
-                <td>변동량</td>
-                <td>결과</td>
-              </tr>
-            </table>
+          <div id="modal_content">
+
           </div>
         </div>
       </div>
@@ -323,80 +313,21 @@
 </script>
 <!-- 차량 이동 현황 모달 출력 -->
 <script>
-  function make_table(data) {
-    var data = JSON.parse(data);
-    var n = Object.keys(data).length;
-    var table = document.getElementById("modal_table");
-    for (let i = 0; i < n; i++) {
-      var str_n = String(i);
-      var row = table.insertRow(-1);
-
-      var cell = row.insertCell(-1);
-      cell.innerHTML = data[str_n]["MOVING_TIME"];
-      var cell = row.insertCell(-1);
-      cell.innerHTML = data[str_n]['MOVING'];
-      var cell = row.insertCell(-1);
-      cell.innerHTML = data[str_n]['PM'];
-      if (data[str_n]['PM'] == '+') {
-        cell.className = "plus";
-      } else if (data[str_n]['PM'] == '-') {
-        cell.className = "minus";
-      }
-      var cell = row.insertCell(-1);
-      cell.innerHTML = data[str_n]['COUNT'];
-      var cell = row.insertCell(-1);
-      cell.innerHTML = data[str_n]['RESULT'];
-    }
-  }
-</script>
-<script>
-  $('.model_yard').click(function(){
+  $('.model').click(function(){
     var model = $(this).text();
     $.ajax({
-    url: "modal/YARD/" + model, 
-    success: function(data){
-      document.getElementById("modal_name").innerHTML = "야적지 / " + model;
-      $("#modal_table").find("tr:gt(0)").remove();
-      make_table(data['table_data']);
-    },
-    error: function(request, status, error){
-      document.getElementById("modal_name").innerHTML = "야적지 / " + model;
-      $("#modal_table").find("tr:gt(0)").remove();
-    }
+        type: 'GET',
+        url: '{{url_for("modal")}}',
+        data: {'model':model},
+        dataType : 'JSON',
+        success: function(modal){
+            $('#modal_content').html(modal);
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            alert(error);
+        }
     });
-    });
-  $('.model_wharf').click(function(){
-      var model = $(this).text();
-      $.ajax({
-      url: "modal/6wharf/" + model, 
-      success: function(data){
-        document.getElementById("modal_name").innerHTML = "6부두 / " + model;
-        $("#modal_table").find("tr:gt(0)").remove();
-        make_table(data['table_data']);
-      },
-      error: function(request, status, error){
-        document.getElementById("modal_name").innerHTML = "6부두 / " + model;
-        $("#modal_table").find("tr:gt(0)").remove();
-      }
-      });
-    });
+  });
 </script>
-<style>
-  .plus {
-    font-size: 20px;
-    text-align: center;
-    color: red;
-  }
-  .minus {
-    font-size: 20px;
-    text-align: center;
-    color: blue;
-  }
-  #modal_name {
-    margin-left: 10px;
-    margin-bottom: 5px;
-  }
-</style>
-
-
 {% endblock contents %}
