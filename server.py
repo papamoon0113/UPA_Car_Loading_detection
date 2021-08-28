@@ -116,7 +116,7 @@ def modal(location, model):
             tmp1.append(_time)
             tmp1.append('YARD')
             tmp1.append('+')
-            tmp1.append(f"{history_df.iloc[i]['M_TO']}에서 들어옴")
+            tmp1.append(f"{history_df.iloc[i]['M_FROM']}에서 들어옴")
             tmp1.append(count)
             tmp1.append(yard_count)
             yard_count = yard_count - count
@@ -126,7 +126,7 @@ def modal(location, model):
             tmp2.append(_time)
             tmp2.append('6wharf')
             tmp2.append('+')
-            tmp2.append(f"{history_df.iloc[i]['M_TO']}에서 들어옴")
+            tmp2.append(f"{history_df.iloc[i]['M_FROM']}에서 들어옴")
             tmp2.append(count)
             tmp2.append(wharf_count)
             wharf_count = wharf_count - count
