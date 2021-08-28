@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block contents %}
+<script src="{{url_for('static', filename='js/jquery.js')}}"></script>
+<div class="w3-main" style="margin-left:200px;margin-top:43px;">
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <div>
+      <h3><b><i class="fa fa-area-chart" style="font-size:24px; margin-top:5px; margin-bottom:5px;"></i> 야적 현황 도표</b></h3>
+    </div>
+  </header>
+    <div class="w3-container" style="overflow-y: scroll; min-height:430px; width:100%">
+      
+    </div>
+  <br>
+  <div class="w3-container w3-gray w3-padding-16">
+    <div class="w3-row">
+      <div class="w3-container w3-quarter w3-margin-top w3-margin-bottom">
+        <img src="{{ url_for('static', filename='img/logo_bigleader.png') }}" alt="big_leader" style="height: 48px; display: block; margin-left: auto; margin-right: auto;">
+      </div>
+      <div class="w3-container w3-quarter w3-margin-top w3-margin-bottom">
+        <img src="{{ url_for('static', filename='img/logo_nextlevel.png') }}" alt="자랑스러운 우리팀" style="height: 48px; display: block; margin-left: auto; margin-right: auto;">
+      </div>
+      <div class="w3-container w3-quarter w3-margin-top w3-margin-bottom">
+        <img src="{{ url_for('static', filename='img/logo_upa.png') }}" alt="upa" style="height: 48px; display: block; margin-left: auto; margin-right: auto;">
+      </div>
+      <div class="w3-container w3-quarter w3-margin-top w3-margin-bottom">
+        <img src="{{ url_for('static', filename='img/logo_ulc.png') }}" alt="ulc" style="height: 48px; display: block; margin-left: auto; margin-right: auto;">
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock contents %}

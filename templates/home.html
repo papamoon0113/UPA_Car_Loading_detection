@@ -5,7 +5,7 @@
   <!-- Header -->
   <header class="w3-container" style="padding-top:22px">
     <div>
-      <h3><b><i class="fa fa-table" style="font-size:24px; margin-top:5px; margin-bottom:5px;"></i> 차량 현황표</b></h3>
+      <h3><b><i class="fa fa-table" style="font-size:24px; margin-top:5px; margin-bottom:5px;"></i> 야적 현황표</b></h3>
     </div>
   </header>
     <div class="w3-container" style="overflow-y: scroll; min-height:430px; width:100%">
@@ -75,8 +75,8 @@
               <tr id="header">
                 <td>날짜</td>
                 <td>FROM_TO</td>
+                <td>이전</td>
                 <td>+/-</td>
-                <td>변동량</td>
                 <td>결과</td>
               </tr>
             </table>
@@ -338,14 +338,14 @@
       var cell = row.insertCell(-1);
       cell.innerHTML = data[str_n]['MOVING'];
       var cell = row.insertCell(-1);
-      cell.innerHTML = data[str_n]['PM'];
+      cell.innerHTML = data[str_n]['BEFORE'];
+      var cell = row.insertCell(-1);
+      cell.innerHTML = data[str_n]['COUNT'];
       if (data[str_n]['PM'] == '+') {
         cell.className = "plus";
       } else if (data[str_n]['PM'] == '-') {
         cell.className = "minus";
       }
-      var cell = row.insertCell(-1);
-      cell.innerHTML = data[str_n]['COUNT'];
       var cell = row.insertCell(-1);
       cell.innerHTML = data[str_n]['RESULT'];
     }
@@ -385,18 +385,21 @@
 </script>
 <style>
   .plus {
-    font-size: 20px;
-    text-align: center;
     color: red;
   }
   .minus {
-    font-size: 20px;
-    text-align: center;
     color: blue;
   }
   #modal_name {
     margin-left: 10px;
     margin-bottom: 5px;
+  }
+</style>
+<style>
+  @media only screen and (max-width: 600px) {
+    #modal_table {
+      font-size: 12px;
+    }
   }
 </style>
 

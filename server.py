@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, make_response
+from flask import Flask, jsonify, request, render_template, make_response, redirect
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from flask_cors import CORS
 import os
@@ -6,6 +6,7 @@ import mysql_util
 import pandas as pd
 import datetime
 import info_mgmt, history_mgmt, count_mgmt
+import update_xlsx
 
 # https 만을 지원하는 기능을 http 에서 테스트할 때 필요한 설정
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
@@ -84,8 +85,8 @@ def modal(location, model):
     # yard_count = current_df[(current_df.MODEL == model) & (current_df.LOCATION == 'YARD')]['COUNT'].iat[0]
     # wharf_count = current_df[(current_df.MODEL == model) & (current_df.LOCATION == '6wharf')]['COUNT'].iat[0]
 
-    result_df = pd.DataFrame(columns=['MOVING_TIME', 'LOCATION', 'PM', 'MOVING', 'COUNT', 'RESULT'])
-
+    result_df = pd.DataFrame(columns=['MOVING_TIME', 'LOCATION', 'PM', 'MOVING', 'BEFORE', 'COUNT', 'RESULT'])
+    translate = {'YARD':'야적지', '6wharf':'6부두', 'abroad':'해외', 'factory':'공장'}
     # result_df에 표에 출력해야 하는 
     for i in range(len(history_df)):
         count = history_df.iloc[i]['COUNT']
@@ -96,8 +97,9 @@ def modal(location, model):
             tmp1.append(_time)
             tmp1.append('YARD')
             tmp1.append('-')
-            tmp1.append(f"{history_df.iloc[i]['M_TO']}으로 나감")
-            tmp1.append(count)
+            tmp1.append(f"{translate[history_df.iloc[i]['M_TO']]}으로 나감")
+            tmp1.append(f'{yard_count + count}')
+            tmp1.append(f'-{count}')
             tmp1.append(yard_count)
             yard_count = yard_count + count
             
@@ -106,8 +108,9 @@ def modal(location, model):
             tmp2.append(_time)
             tmp2.append('6wharf')
             tmp2.append('-')
-            tmp2.append(f"{history_df.iloc[i]['M_TO']}으로 나감")
-            tmp2.append(count)
+            tmp2.append(f"{translate[history_df.iloc[i]['M_TO']]}으로 나감")
+            tmp2.append(f'{wharf_count + count}')
+            tmp2.append(f'-{count}')
             tmp2.append(wharf_count)
             wharf_count = wharf_count + count
 
@@ -116,8 +119,9 @@ def modal(location, model):
             tmp1.append(_time)
             tmp1.append('YARD')
             tmp1.append('+')
-            tmp1.append(f"{history_df.iloc[i]['M_FROM']}에서 들어옴")
-            tmp1.append(count)
+            tmp1.append(f"{translate[history_df.iloc[i]['M_FROM']]}에서 들어옴")
+            tmp1.append(f'{yard_count - count}')
+            tmp1.append(f'+{count}')
             tmp1.append(yard_count)
             yard_count = yard_count - count
 
@@ -126,8 +130,9 @@ def modal(location, model):
             tmp2.append(_time)
             tmp2.append('6wharf')
             tmp2.append('+')
-            tmp2.append(f"{history_df.iloc[i]['M_FROM']}에서 들어옴")
-            tmp2.append(count)
+            tmp2.append(f"{translate[history_df.iloc[i]['M_FROM']]}에서 들어옴")
+            tmp2.append(f'{wharf_count - count}')
+            tmp2.append(f'+{count}')
             tmp2.append(wharf_count)
             wharf_count = wharf_count - count
         
@@ -145,5 +150,33 @@ def modal(location, model):
     # print(result)
     return jsonify({'table_data':result})
 
+@app.errorhandler(500)
+def internal_error(error):
+    return redirect('/')
+
+@app.route('/chart')
+def chart():
+    return render_template('chart.html')
+
+@app.route('/history')
+def history():
+    return render_template('history.html')
+
+@app.route('/upload')
+def upload_page():
+    return render_template('upload.html')
+
+@app.route('/upload/xlsx', methods=['GET', 'POST'])
+def upload_xlsx():
+    if request.method == 'POST':
+        f = request.files['file']
+        m_from = request.form['from']
+        m_to = request.form['to']
+        moving_time = request.form['date'] + ' 00:00:00'
+
+        update_xlsx.update_xlsx(f, m_from, m_to, moving_time)
+        
+    return redirect('/')
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='8080', debug=False)
+    app.run(host='0.0.0.0', port='8080', debug=True)
