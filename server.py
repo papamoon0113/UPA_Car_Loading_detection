@@ -63,6 +63,7 @@ def modal(location, model):
     _count = count_mgmt.Count()
     _history = history_mgmt.History()
     history_df = _history.find_model_log(model)
+    print(history_df)
     # print(history_df)
     # current_df = pd.read_excel('table_example.xlsx')
     # history_df = pd.read_excel('history.xlsx')
