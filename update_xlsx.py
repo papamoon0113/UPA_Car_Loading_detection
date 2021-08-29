@@ -16,7 +16,7 @@ def update_xlsx(xlsx, m_from, m_to, moving_time):
     wb = openpyxl.load_workbook(xlsx)
     st = wb['Sheet1']
 
-    translate = {'STF':'SantaFeTM', 'AVT':'AvanteMD', 'i30':'i30', 'NKON':'TheNewKona'}
+    translate = {'STF':'SantaFeTM', 'AVT':'AvanteMD', 'i30':'i30', 'NKON':'TheNewKona', 'NSR':'NewSorentoR', 'TNC':'TheNewCanival', 'LFS':'LFSonata', 'NFS':'NFSonata', 'YFS':'YFSonata', 'GS':'GrandStarex', 'GHG':'GranduerHG'}
 
     # 엑셀파일에서 total이라는 글자 찾기
     location = find(st, 'TOTAL')
