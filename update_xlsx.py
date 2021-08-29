@@ -38,13 +38,13 @@ def update_xlsx(xlsx, m_from, m_to, moving_time):
                 _history.create(value, m_from, m_to, count, moving_time)
 
                 # model_count에 반영
-                if m_from == '야적지':
+                if m_from == 'YARD':
                     _count.minus_count(value, 'YARD', count)
-                if m_from == '6부두':
+                if m_from == '6wharf':
                     _count.minus_count(value, '6wharf', count)
-                if m_to == '야적지':
+                if m_to == 'YARD':
                     _count.plus_count(value, 'YARD', count)
-                if m_to == '6부두':
+                if m_to == '6wharf':
                     _count.plus_count(value, '6wharf', count)
     # 그 글자를 위의 translate로 변환해서 create 하기
 
