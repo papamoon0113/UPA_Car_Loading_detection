@@ -86,7 +86,7 @@ def modal(location, model):
     # wharf_count = current_df[(current_df.MODEL == model) & (current_df.LOCATION == '6wharf')]['COUNT'].iat[0]
 
     result_df = pd.DataFrame(columns=['MOVING_TIME', 'LOCATION', 'PM', 'MOVING', 'BEFORE', 'COUNT', 'RESULT'])
-    translate = {'YARD':'야적지', '6wharf':'6부두', 'abroad':'해외', 'factory':'공장'}
+    translate = {'YARD':'자동차부두', '6wharf':'6부두', 'abroad':'해외', 'factory':'공장'}
     # result_df에 표에 출력해야 하는 
     for i in range(len(history_df)):
         count = history_df.iloc[i]['COUNT']
@@ -156,7 +156,7 @@ def internal_error(error):
 
 @app.route('/chart')
 def chart():
-    # 일단 현재 야적지에 있는 차량들을 전부 불러와야 한다.
+    # 일단 현재 자동차부두에 있는 차량들을 전부 불러와야 한다.
     _count = count_mgmt.Count()
     df = _count.get_all()
     # print(df)

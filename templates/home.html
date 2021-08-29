@@ -11,11 +11,11 @@
     <div class="w3-container" style="overflow-y: scroll; min-height:430px; width:100%">
       <form autocomplete="off">
         <div class="autocomplete" style="width:100%;">
-          <input id="myInput" type="text" onchange="myFunction()" placeholder="Search for names..">
+          <input id="myInput" type="text" onchange="myFunction()" placeholder="모델명 입력">
         </div>
       </form><br>
       <div class="w3-container w3-half w3-center">
-        <h5><b>야적지</b></h5>
+        <h5><b>자동차부두</b></h5>
           <div>
             <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white w3-half" id="myTable1">
               {% for i in range(data[0][0]) %}
@@ -357,12 +357,12 @@
     $.ajax({
     url: "modal/YARD/" + model, 
     success: function(data){
-      document.getElementById("modal_name").innerHTML = "야적지 / " + model;
+      document.getElementById("modal_name").innerHTML = "자동차부두 / " + model;
       $("#modal_table").find("tr:gt(0)").remove();
       make_table(data['table_data']);
     },
     error: function(request, status, error){
-      document.getElementById("modal_name").innerHTML = "야적지 / " + model;
+      document.getElementById("modal_name").innerHTML = "자동차부두 / " + model;
       $("#modal_table").find("tr:gt(0)").remove();
     }
     });
